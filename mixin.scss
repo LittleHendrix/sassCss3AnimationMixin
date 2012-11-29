@@ -1,0 +1,15 @@
+@mixin animation (
+	$name: false, /* keyframename|none */
+	$duration: 0, /* time(default=0) */ 
+	$timing_function: ease, /* linear|ease(default)|ease-in|ease-out|ease-in-out|cubic-bezier(n,n,n,n)default */
+	$delay: 0, /* time(default=0) */
+	$iteration_count: 1, /* n|infinite */ 
+	$direction: normal /* normal|alternate */
+) {
+	@if $name {
+		@if $experimental-support-for-mozilla { -moz-animation: $name $duration $timing_function $delay $iteration_count $direction; }
+		@if $experimental-support-for-webkit { -webkit-animation: $name $duration $timing_function $delay $iteration_count $direction; }
+		@if $experimental-support-for-opera { -o-animation: $name $duration $timing_function $delay $iteration_count $direction; }
+		animation: $name $duration $timing_function $delay $iteration_count $direction;
+	}
+}
