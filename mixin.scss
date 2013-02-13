@@ -1,15 +1,35 @@
 @mixin animation (
-	$name: false, /* keyframename|none */
-	$duration: 0, /* time(default=0) */ 
-	$timing_function: ease, /* linear|ease(default)|ease-in|ease-out|ease-in-out|cubic-bezier(n,n,n,n)default */
-	$delay: 0, /* time(default=0) */
-	$iteration_count: 1, /* n|infinite */ 
-	$direction: normal /* normal|alternate */
+	$name: none, // keyframename|none
+	$duration: 500ms, // time(default=0) 
+	$timing_function: ease, // linear|ease(default)|ease-in|ease-out|ease-in-out|cubic-bezier(n,n,n,n)default
+	$iteration_count: 1, // n|infinite 
+	$direction: normal, // normal|alternate
+	$delay: 0 // time(default=0)
 ) {
-	@if $name {
-		@if $experimental-support-for-mozilla { -moz-animation: $name $duration $timing_function $delay $iteration_count $direction; }
-		@if $experimental-support-for-webkit { -webkit-animation: $name $duration $timing_function $delay $iteration_count $direction; }
-		@if $experimental-support-for-opera { -o-animation: $name $duration $timing_function $delay $iteration_count $direction; }
-		animation: $name $duration $timing_function $delay $iteration_count $direction;
-	}
+    @if $name == none {
+        @include experimental(animation, none, -moz, -webkit, -o, not -ms, not -khtml, official);
+    }
+    @else {
+        $full: $name $duration $timing_function;
+        @if $delay > 0 {
+            $full: $full $delay;
+        }
+        $full: $full $iteration_count $direction; 
+        @include experimental(animation, $full, -moz, -webkit, -o, not -ms, not -khtml, official);
+    }
+}
+
+@mixin keyframes($name) {
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+    @-moz-keyframes #{$name} {
+        @content;
+    }
+    @-o-keyframes #{$name} {
+        @content;
+    }
+    @keyframes #{$name} {
+        @content;
+    }
 }
