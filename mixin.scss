@@ -1,20 +1,45 @@
+// Remove this mixin if using with Compass imports
+@mixin experimental($property, $value, $moz: false, $webkit: false, $o: false, $ms: false, $khtml: false, $official: true) {
+    
+    @if $moz {
+        -moz-#{$property}: $value;
+    }
+    
+    @if $webkit {
+        -webkit-#{$property}: $value;
+    }
+
+    @if $o {
+        -o-#{$property}: $value;
+    }
+
+    @if $ms {
+        -ms-#{$property}: $value;
+    }
+
+    @if $khtml {
+        -khtml-#{$property}: $value;
+    }
+
+    @if $official {
+        #{$property}: $value;
+    }
+}
+
 @mixin animation (
-	$name: none, // keyframename|none
-	$duration: 500ms, // time(default=0) 
-	$timing_function: ease, // linear|ease(default)|ease-in|ease-out|ease-in-out|cubic-bezier(n,n,n,n)default
-	$iteration_count: 1, // n|infinite 
-	$direction: normal, // normal|alternate
-	$delay: 0 // time(default=0)
+	$animation-name: none, // keyframename|none
+	$animation-duration: 0s, // time(default=0) 
+	$animation-timing-function: ease, // linear|ease(default)|ease-in|ease-out|ease-in-out|cubic-bezier(n,n,n,n)default
+	$animation-delay: 0s, // time(default=0)
+	$animation-iteration-count: 1, // n|infinite 
+	$animation-direction: normal, // normal|alternate
+	$animation-fill-mode: none // none(default)|forwards|backwards|both
 ) {
-    @if $name == none {
+    @if $animation-name == none {
         @include experimental(animation, none, -moz, -webkit, -o, not -ms, not -khtml, official);
     }
     @else {
-        $full: $name $duration $timing_function;
-        @if $delay > 0 {
-            $full: $full $delay;
-        }
-        $full: $full $iteration_count $direction; 
+        $full: $animation-name $animation-duration $animation-timing-function $animation-delay $animation-iteration-count $animation-direction $animation-fill-mode; 
         @include experimental(animation, $full, -moz, -webkit, -o, not -ms, not -khtml, official);
     }
 }
